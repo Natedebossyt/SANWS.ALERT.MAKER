@@ -5,7 +5,7 @@ import requests
 # =========================
 # CONFIG
 # =========================
-WEBHOOK_URL = os.environ.get("WEBHOOK_URL")  # Discord webhook from Railway env
+WEBHOOK_URL = os.environ.get("https://discord.com/api/webhooks/1473863302156390637/jB-EgZsd9GCIUOe_S3TDgudr4YRreHB3uSvXiEN_44B52h4Qd_oyhx33UGT9OE05JxZN")  # Discord webhook from Railway env
 PORT = int(os.environ.get("PORT", 5000))     # Railway assigns this automatically
 SECRET_KEY = os.environ.get("SECRET_KEY", "12321Nb12321")  # Optional secret key
 
@@ -283,3 +283,4 @@ Extra: {extra_text}
 if __name__ == "__main__":
     print("\n✅ NDC Alert Creator Running on Railway!\n")
     app.run(host="0.0.0.0", port=PORT, debug=False)
+
