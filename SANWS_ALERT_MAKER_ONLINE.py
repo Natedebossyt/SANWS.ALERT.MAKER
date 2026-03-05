@@ -193,7 +193,13 @@ alert_variants = {
 # =========================
 def generate_html():
     html_dropdowns = ""
-    html_dropdowns += "<label>Area</label><br>"
+
+    # Extra Variable input
+    html_dropdowns += "<label>Extra Variable:</label><br>"
+    html_dropdowns += "<input type='text' name='extra_var' placeholder='Enter extra variable...' style='width:90%; padding:8px; margin:5px; font-size:16px;'><br><br>"
+
+    # Other dropdowns and area input
+    html_dropdowns += "<label>Area:</label><br>"
     html_dropdowns += "<input type='text' name='area' placeholder='Enter area...' style='width:90%; padding:8px; margin:5px; font-size:16px;'><br><br>"
 
     for category, options in alert_variants.items():
@@ -246,8 +252,13 @@ def send_alert():
     if key != SECRET_KEY:
         return "❌ Unauthorized", 401
 
+    # Grab all form data
     fields = ["title","severity","summary","hazard","area","direction","expires","extra"]
     data = {f: request.form.get(f) for f in fields}
+    extra_var = request.form.get("extra_var", "")
+
+    # Replace {ex_var} in Extra text
+    extra_text = data['extra'].replace("{ex_var}", extra_var)
 
     message = f"""[ALERT]
 Title: {data['title']}
@@ -257,7 +268,7 @@ Hazard: {data['hazard']}
 Area: {data['area']}
 Direction: {data['direction']}
 Expires: {data['expires']}
-Extra: {data['extra']}
+Extra: {extra_text}
 """
     try:
         requests.post(WEBHOOK_URL, json={"content": message})
